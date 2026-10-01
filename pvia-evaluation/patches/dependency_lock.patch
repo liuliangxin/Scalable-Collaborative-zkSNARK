@@ -1,0 +1,68 @@
+--- Cargo.lock.upstream	2026-10-01 01:07:47.368949201 +0000
++++ Cargo.lock	2026-10-01 02:39:45.110908060 +0000
+@@ -412,6 +412,15 @@
+ ]
+ 
+ [[package]]
++name = "cpufeatures"
++version = "0.2.17"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "59ed5838eebb26a2bb2e58f6d5b5316989ae9d08bab10e0e6d103e656d1b0280"
++dependencies = [
++ "libc",
++]
++
++[[package]]
+ name = "criterion"
+ version = "0.5.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -695,9 +704,9 @@
+ 
+ [[package]]
+ name = "half"
+-version = "2.5.0"
++version = "2.4.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "7db2ff139bba50379da6aa0766b52fdcb62cb5b263009b09ed58ba604e14bbd1"
++checksum = "6dd08c532ae367adf81c312a4580bc67f1d0fe8bc9c460520283f4c0ff277888"
+ dependencies = [
+  "cfg-if",
+  "crunchy",
+@@ -753,6 +762,7 @@
+  "rand",
+  "rayon",
+  "secret-sharing",
++ "sha2",
+  "tokio",
+ ]
+ 
+@@ -809,9 +819,9 @@
+ 
+ [[package]]
+ name = "libc"
+-version = "0.2.153"
++version = "0.2.189"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
++checksum = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
+ 
+ [[package]]
+ name = "lock_api"
+@@ -1232,6 +1242,17 @@
+ ]
+ 
+ [[package]]
++name = "sha2"
++version = "0.10.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"
++dependencies = [
++ "cfg-if",
++ "cpufeatures",
++ "digest",
++]
++
++[[package]]
+ name = "slab"
+ version = "0.4.9"
+ source = "registry+https://github.com/rust-lang/crates.io-index"

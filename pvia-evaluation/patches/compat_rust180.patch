@@ -1,0 +1,11 @@
+--- dist-primitive/src/dpoly_comm.rs.upstream	2026-10-01 01:08:48.715712591 +0000
++++ dist-primitive/src/dpoly_comm.rs	2026-10-01 01:08:48.755711800 +0000
+@@ -387,7 +387,7 @@
+                     let worker_answer = (<E as Pairing>::ScalarField::zero(), vec![]);
+                     vec![leader_answer]
+                         .into_iter()
+-                        .chain(std::iter::repeat_n(worker_answer, net.n_parties() - 1))
++                        .chain(std::iter::repeat(worker_answer).take(net.n_parties() - 1))
+                         .collect()
+                 },
+                 "d_open",

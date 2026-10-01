@@ -1,0 +1,40 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Lightweight evaluation on the public PSS/HyperPlonk artifact. The 8-party column exercises representative collaborative release objects; the 16-party point is a commitment-only scalability sanity check.}
+\label{tab:second-inst-light}
+\begin{tabular}{lcc}
+\toprule
+Check & 8 parties & 16 parties \\
+\midrule
+Sumcheck released rounds vs. reference & $8/8$ & -- \\
+Modified Sumcheck round & WITHHOLD & -- \\
+Packed PCS commitment & MATCH & MATCH \\
+PCS opening proof & MATCH & -- \\
+Native PCS verification$^\dagger$ & PASS & -- \\
+Context/ordinal/payload binding & PASS & -- \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\begin{minipage}{0.96\columnwidth}
+\footnotesize
+$^\dagger$The upstream benchmark keeps the final scalar returned by \texttt{c\_open} in an internal share representation. We therefore verify the collaboratively reconstructed commitment and opening proof using the corresponding upstream reference opening value; we make no correctness claim for that benchmark-only scalar reconstruction path.
+\end{minipage}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\caption{Per-release diagnostic costs for the 8-party second-instantiation experiment (median of five measured runs after one warm-up). These numbers are not full-system PVIA overhead.}
+\label{tab:second-inst-cost}
+\begin{tabular}{lrr}
+\toprule
+Operation & Protocol path & Release check \\
+\midrule
+Collaborative Sumcheck & 7.29 ms & 67.3 $\mu$s \\
+Collaborative PCS commit/open & 372.52 ms & 30.76 ms \\
+Context binding & -- & 0.80 $\mu$s \\
+\bottomrule
+\end{tabular}
+\end{table}
