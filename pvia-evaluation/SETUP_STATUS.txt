@@ -1,0 +1,15 @@
+SECOND_INSTANCE_SETUP: PASS
+source=https://github.com/LBruyne/Scalable-Collaborative-zkSNARK
+source_archive_sha256=466f56aa2c26d54461577d0720753bba19d58f4d92f1bb31bfb5c94e9056a238
+rustc=rustc 1.80.0-nightly (79734f1db 2024-05-02)
+cargo=cargo 1.80.0-nightly (6087566b3 2024-04-30)
+compat_half=2.4.1
+compat_repeat_n=repeat_take
+compat_patch_sha256=a7f057e8f0b3ca62c1881786b5c0327ac1da30d590ec3f9b580e42521aa788e6
+build=PASS
+smoke=l1_n8
+smoke_sim_collaborative_s=3.755
+smoke_wall_s=7.75
+smoke_rss_kb=50780
+smoke_comm_report=(61054,167062)
+scope=upstream_local_artifact_smoke_not_pvia_overhead_yet

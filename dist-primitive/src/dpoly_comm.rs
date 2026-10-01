@@ -387,7 +387,7 @@ impl<E: Pairing> PolynomialCommitment<E> {
                     let worker_answer = (<E as Pairing>::ScalarField::zero(), vec![]);
                     vec![leader_answer]
                         .into_iter()
-                        .chain(std::iter::repeat_n(worker_answer, net.n_parties() - 1))
+                        .chain(std::iter::repeat(worker_answer).take(net.n_parties() - 1))
                         .collect()
                 },
                 "d_open",
