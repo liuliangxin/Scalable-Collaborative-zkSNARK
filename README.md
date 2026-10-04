@@ -1,3 +1,265 @@
+# Scalable Collaborative zk-SNARK — PVIA Second-Instantiation Artifact
+
+This fork preserves the public **Scalable Collaborative zk-SNARK / PSS-HyperPlonk** artifact and adds the lightweight **second-instantiation evaluation** used by the PVIA project.
+
+The primary PVIA implementation and full end-to-end evaluation are in:
+
+https://github.com/liuliangxin/Code-Based-Scalable-coSNARKs
+
+This repository serves a different purpose: it tests whether the PVIA release-check abstraction can be applied to a structurally different collaborative prover without turning this repository into a second full-system PVIA benchmark.
+
+## PVIA additions in this fork
+
+The final evaluation-specific additions are:
+
+```text
+hyperplonk/examples/pvia_light_eval.rs
+hyperplonk/examples/pvia_commit_sanity.rs
+
+pvia-evaluation/
+  README.md
+  SETUP_STATUS.txt
+  patches/
+  results/
+```
+
+The integration is intentionally small. The final experiment does **not** activate an algorithmic rewrite of the upstream HyperPlonk protocol.
+
+Compatibility changes are recorded under:
+
+```text
+pvia-evaluation/patches/
+```
+
+They include the Rust-1.80 dependency/iterator compatibility required to reproduce the artifact on the paper-era nightly toolchain.
+
+## Environment used for the PVIA applicability test
+
+The test was executed on:
+
+```text
+OS: Linux 5.4
+CPU: 2 x Intel Xeon Gold 6330 @ 2.00 GHz
+Hardware threads: 112
+RAM: 251 GiB
+
+Rust: nightly-2024-05-03
+rustc: 1.80.0-nightly
+```
+
+## Toolchain setup
+
+Install the matching nightly:
+
+```bash
+rustup toolchain install nightly-2024-05-03 --profile minimal
+source "$HOME/.cargo/env"
+```
+
+Check:
+
+```bash
+rustc +nightly-2024-05-03 --version
+cargo +nightly-2024-05-03 --version
+```
+
+## Build
+
+From the repository root:
+
+```bash
+export RUSTFLAGS="-Ctarget-cpu=native -Awarnings"
+
+cargo +nightly-2024-05-03 build \
+  --release \
+  --example hyperplonk \
+  --example pvia_light_eval \
+  --example pvia_commit_sanity \
+  --features local
+```
+
+The three relevant binaries are:
+
+```text
+target/release/examples/hyperplonk
+target/release/examples/pvia_light_eval
+target/release/examples/pvia_commit_sanity
+```
+
+## 1. Upstream artifact smoke test
+
+Run the original HyperPlonk example:
+
+```bash
+target/release/examples/hyperplonk --l 1 --n 8
+```
+
+In the fixed evaluation environment, the upstream artifact completed 3/3 local smoke runs. The median collaborative-simulation time was approximately 4.17 s.
+
+This value is used only to show that the upstream artifact executes in the test environment. It is **not** used as a cross-system performance comparison with the primary PVIA repository.
+
+## 2. Eight-party PVIA lightweight evaluation
+
+Run:
+
+```bash
+target/release/examples/pvia_light_eval --n 8
+```
+
+Expected top-level marker:
+
+```text
+PVIA_SECOND_INSTANCE_LIGHT_EVAL: PASS
+```
+
+The test checks representative release objects:
+
+```text
+parties=8
+n=8
+
+Sumcheck released rounds:
+  8/8 match the upstream local reference
+
+modified Sumcheck round:
+  WITHHOLD
+
+packed PCS commitment:
+  reference match
+
+PCS opening-proof elements:
+  reference match
+
+native PCS verification:
+  PASS with the corresponding upstream reference opening value
+
+context binding:
+  BOUND
+
+wrong context:
+  REJECTED
+
+stale ordinal:
+  REJECTED
+
+modified payload:
+  REJECTED
+```
+
+## 3. Sixteen-party commitment sanity check
+
+Run:
+
+```bash
+target/release/examples/pvia_commit_sanity --l 2 --n 8
+```
+
+Expected:
+
+```text
+PVIA_SECOND_INSTANCE_COMMIT_SANITY: PASS
+l=2
+parties=16
+n=8
+reference_match=1
+```
+
+## Fixed result files
+
+Curated results are under:
+
+```text
+pvia-evaluation/results/
+```
+
+Important files:
+
+```text
+FINAL_STATUS.txt
+SUMMARY.txt
+SOURCE_HASHES.txt
+second_instance_light_eval.csv
+second_instance_light_eval_runs.csv
+second_instance_light_eval.tex
+```
+
+The main package-level acceptance marker is:
+
+```text
+PVIA_SECOND_INSTANCE_LIGHT_PACKAGE: PASS
+```
+
+## Measured lightweight costs
+
+Five measured runs were collected after one warm-up.
+
+Representative medians:
+
+| Item | Median |
+|---|---:|
+| Collaborative Sumcheck primitive | 7.287 ms |
+| Sumcheck release check | 67.334 us |
+| Collaborative PCS commit/open path | 372.518 ms |
+| Native PCS verification check | 30.763 ms |
+| Context binding check | 0.797 us |
+
+The corresponding per-operation ratios are diagnostic only. They must **not** be reported as end-to-end PVIA overhead for this repository.
+
+The primary end-to-end PVIA overhead experiment is in:
+
+https://github.com/liuliangxin/Code-Based-Scalable-coSNARKs
+
+## Scope and artifact boundary
+
+The upstream artifact is explicitly a research proof-of-concept benchmark. The PVIA evaluation therefore keeps a conservative correctness scope.
+
+In particular:
+
+- the eight verifier-visible Sumcheck round polynomials are included in the release claim;
+- the upstream terminal Sumcheck endpoint is excluded from that claim;
+- the collaborative PCS commitment and opening-proof elements are checked against the upstream reference;
+- the final scalar returned by `c_open` remains in an upstream internal share representation;
+- native PCS verification therefore uses the corresponding upstream reference opening value;
+- no claim is made that this fork performs a complete end-to-end verification of every upstream HyperPlonk benchmark output.
+
+## Reproduction note
+
+For a paper-style repetition:
+
+```bash
+mkdir -p pvia-evaluation/manual-results
+
+# warm-up
+target/release/examples/pvia_light_eval --n 8 \
+  > pvia-evaluation/manual-results/run_0.log 2>&1
+
+# five measured runs
+for i in 1 2 3 4 5; do
+  target/release/examples/pvia_light_eval --n 8 \
+    > "pvia-evaluation/manual-results/run_$i.log" 2>&1
+
+  grep -q '^PVIA_SECOND_INSTANCE_LIGHT_EVAL: PASS$' \
+    "pvia-evaluation/manual-results/run_$i.log"
+
+  echo "run $i PASS"
+done
+
+target/release/examples/pvia_commit_sanity --l 2 --n 8 \
+  > pvia-evaluation/manual-results/commit16.log 2>&1
+```
+
+## Upstream provenance
+
+The original project implements the paper:
+
+**Scalable Collaborative zk-SNARK and its Application to Fully Distributed Proof Delegation**, USENIX Security 2025.
+
+The original artifact documentation is preserved below.
+
+---
+
+# Upstream artifact documentation
+
 # Scalable-Collaborative-zk-SNARK
 
 Rust implementation of the paper "[Scalable Collaborative zk-SNARK and its Application to Fully Distributed Proof Delegation](https://eprint.iacr.org/2024/940)", which appears in [*USENIX Security 2025*](https://www.usenix.org/conference/usenixsecurity25).
