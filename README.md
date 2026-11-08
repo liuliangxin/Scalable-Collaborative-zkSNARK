@@ -1,14 +1,14 @@
-# Scalable Collaborative zk-SNARK — PVIA Second-Instantiation Artifact
+# Scalable Collaborative zk-SNARK — PAR-coSNARK Second-Instantiation Artifact
 
-This fork preserves the public **Scalable Collaborative zk-SNARK / PSS-HyperPlonk** artifact and adds the lightweight **second-instantiation evaluation** used by the PVIA project.
+This fork preserves the public **Scalable Collaborative zk-SNARK / PSS-HyperPlonk** artifact and adds the lightweight **second-instantiation evaluation** used by the PAR-coSNARK project.
 
-The primary PVIA implementation and full end-to-end evaluation are in:
+The primary PAR-coSNARK implementation and full end-to-end evaluation are in:
 
 https://github.com/liuliangxin/Code-Based-Scalable-coSNARKs
 
-This repository serves a different purpose: it tests whether the PVIA release-check abstraction can be applied to a structurally different collaborative prover without turning this repository into a second full-system PVIA benchmark.
+This repository serves a different purpose: it tests whether the PAR-coSNARK release-check abstraction can be applied to a structurally different collaborative prover without turning this repository into a second full-system PAR-coSNARK benchmark.
 
-## PVIA additions in this fork
+## PAR-coSNARK additions in this fork
 
 The final evaluation-specific additions are:
 
@@ -33,7 +33,7 @@ pvia-evaluation/patches/
 
 They include the Rust-1.80 dependency/iterator compatibility required to reproduce the artifact on the paper-era nightly toolchain.
 
-## Environment used for the PVIA applicability test
+## Environment used for the PAR-coSNARK applicability test
 
 The test was executed on:
 
@@ -96,9 +96,9 @@ target/release/examples/hyperplonk --l 1 --n 8
 
 In the fixed evaluation environment, the upstream artifact completed 3/3 local smoke runs. The median collaborative-simulation time was approximately 4.17 s.
 
-This value is used only to show that the upstream artifact executes in the test environment. It is **not** used as a cross-system performance comparison with the primary PVIA repository.
+This value is used only to show that the upstream artifact executes in the test environment. It is **not** used as a cross-system performance comparison with the primary PAR-coSNARK repository.
 
-## 2. Eight-party PVIA lightweight evaluation
+## 2. Eight-party PAR-coSNARK lightweight evaluation
 
 Run:
 
@@ -183,6 +183,8 @@ second_instance_light_eval_runs.csv
 second_instance_light_eval.tex
 ```
 
+The executable acceptance markers retain their historical `PVIA_` prefix; these literal output strings are kept unchanged so the documented checks match the source code.
+
 The main package-level acceptance marker is:
 
 ```text
@@ -203,15 +205,15 @@ Representative medians:
 | Native PCS verification check | 30.763 ms |
 | Context binding check | 0.797 us |
 
-The corresponding per-operation ratios are diagnostic only. They must **not** be reported as end-to-end PVIA overhead for this repository.
+The corresponding per-operation ratios are diagnostic only. They must **not** be reported as end-to-end PAR-coSNARK overhead for this repository.
 
-The primary end-to-end PVIA overhead experiment is in:
+The primary end-to-end PAR-coSNARK overhead experiment is in:
 
 https://github.com/liuliangxin/Code-Based-Scalable-coSNARKs
 
 ## Scope and artifact boundary
 
-The upstream artifact is explicitly a research proof-of-concept benchmark. The PVIA evaluation therefore keeps a conservative correctness scope.
+The upstream artifact is explicitly a research proof-of-concept benchmark. The PAR-coSNARK evaluation therefore keeps a conservative correctness scope.
 
 In particular:
 
