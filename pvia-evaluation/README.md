@@ -1,6 +1,6 @@
 # PVIA lightweight evaluation
 
-This branch contains the lightweight second-instantiation evaluation used in the PVIA paper.
+This directory contains the lightweight second-instantiation evaluation used to assess the PVIA release-check abstraction on the PSS/HyperPlonk-style collaborative prover. It is an applicability evaluation, not a second full-system PVIA overhead benchmark.
 
 ## Build
 
