@@ -1,6 +1,6 @@
-# PVIA lightweight evaluation
+# PAR-coSNARK lightweight evaluation
 
-This directory contains the lightweight second-instantiation evaluation used to assess the PVIA release-check abstraction on the PSS/HyperPlonk-style collaborative prover. It is an applicability evaluation, not a second full-system PVIA overhead benchmark.
+This directory contains the lightweight second-instantiation evaluation used to assess the PAR-coSNARK release-check abstraction on the PSS/HyperPlonk-style collaborative prover. It is an applicability evaluation, not a second full-system PAR-coSNARK overhead benchmark.
 
 ## Build
 
@@ -24,4 +24,6 @@ target/release/examples/pvia_commit_sanity --l 2 --n 8
 
 The main acceptance marker is `PVIA_SECOND_INSTANCE_LIGHT_PACKAGE: PASS` in `pvia-evaluation/results/FINAL_STATUS.txt`.
 
-The experiment is intentionally lightweight: it validates representative collaborative Sumcheck and PCS release objects and a 16-party commitment sanity check. It is not reported as a second end-to-end PVIA overhead benchmark.
+The `PVIA_` prefix in this executable output marker is retained verbatim for compatibility with the source code.
+
+The experiment is intentionally lightweight: it validates representative collaborative Sumcheck and PCS release objects and a 16-party commitment sanity check. It is not reported as a second end-to-end PAR-coSNARK overhead benchmark.
